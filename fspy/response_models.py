@@ -10,7 +10,7 @@ class FlareSolverNotOK:
 
     @classmethod
     def from_dict(cls, dct):
-        return FlareSolverNotOK(
+        return cls(
             dct["status"],
             dct["version"],
             dct["message"]
@@ -28,11 +28,32 @@ class SessionsListResponse:
 
     @classmethod
     def from_dict(cls, dct):
-        return SessionsListResponse(
+        return cls(
             dct["startTimestamp"],
             dct["endTimestamp"],
             dct["version"],
             dct["status"],
             dct["message"],
             dct["sessions"]
+        )
+
+
+@dataclass
+class SesssionCreateResponse:
+    startTimestamp: int
+    endTimestamp: int
+    version: str
+    status: str
+    message: str
+    session: str
+
+    @classmethod
+    def from_dict(cls, dct):
+        return cls(
+            dct["startTimestamp"],
+            dct["endTimestamp"],
+            dct["version"],
+            dct["status"],
+            dct["message"],
+            dct["session"]
         )
