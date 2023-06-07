@@ -1,7 +1,10 @@
 from typing import Union, Literal, Optional, List
-import requests
-from .response_models import FlareSolverNotOK, SessionsListResponse
+
 import orjson
+import requests
+
+from .response_models import FlareSolverNotOK, SessionsListResponse, SesssionCreateResponse
+from .solver_exceptions import UnsupportedProxySchema
 
 
 class FlareSolverrError(Exception):
@@ -59,3 +62,26 @@ class FlareSolverr:
         if response_dict["status"] != "ok":
             return FlareSolverNotOK.from_dict(response_dict)
         return SessionsListResponse.from_dict(response_dict)
+
+    def create_session(self, session_id: str = None, proxy_url: str = None) -> Union[SesssionCreateResponse, FlareSolverNotOK]:
+        """
+        Create a session. This will launch a new browser instance which will retain cookies.
+        :param session_id: String. Optional.
+        :param proxy_url: String. Optional. Must include proxy schema. ("http://", "socks4://", "socks5://")
+        :return:
+        """
+        payload = {
+            "cmd": "sessions.create",
+        }
+        if session_id:
+            payload["session"] = session_id
+        if proxy_url:
+            if not proxy_url.startswith("http://") and not proxy_url.startswith("https://") and not proxy_url.startswith("socks4://") and not proxy_url.startswith("socks5://"):
+                raise UnsupportedProxySchema(f"Supported proxy schemas: ['http(s), socks4, socks5']. Yours: {proxy_url.split('://', 1)[0]}")
+            payload["proxy"] = proxy_url
+        response = self.req_session.post(self.flare_solverr_url, json=payload)
+        response_dict = orjson.loads(response.content)
+
+        if response_dict["status"] != "ok":
+            return FlareSolverNotOK.from_dict(response_dict)
+        return SesssionCreateResponse.from_dict(response_dict)
