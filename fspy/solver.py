@@ -43,3 +43,19 @@ class FlareSolverr:
         if response_dict["status"] != "ok":
             return FlareSolverNotOK.from_dict(response_dict)
         return SessionsListResponse.from_dict(response_dict).sessions
+
+    @property
+    def _sessions_raw(self) -> Union[SessionsListResponse, FlareSolverNotOK]:
+        """
+        Get the whole response as SessionsListResponse object.
+        Returns 'FlareSolverNotOK' object if flaresolverr status != 'ok'
+        """
+        payload = {
+            "cmd": "sessions.list"
+        }
+        response = self.req_session.post(self.flare_solverr_url, json=payload)
+        response_dict = orjson.loads(response.content)
+
+        if response_dict["status"] != "ok":
+            return FlareSolverNotOK.from_dict(response_dict)
+        return SessionsListResponse.from_dict(response_dict)
