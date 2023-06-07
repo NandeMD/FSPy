@@ -15,11 +15,12 @@ class FlareSolverr:
             host: str = "127.0.0.1",
             port: Optional[Union[str, int]] = "8191",
             http_schema: Literal["http", "https"] = "http",
-            additional_headers: dict = {},
+            additional_headers: dict = None,
             v: str = "v1"
     ) -> None:
         self.req_session = requests.Session()
-        self.req_session.headers.update = {"Content-Type": "application/json", **additional_headers}
+        ah = additional_headers if additional_headers is not None else {}
+        self.req_session.headers.update = {"Content-Type": "application/json", **ah}
 
         self.host = host
         self.port = str(port) if port is not None else None
@@ -29,6 +30,10 @@ class FlareSolverr:
 
     @property
     def sessions(self) -> Union[List[str], FlareSolverNotOK]:
+        """
+        Get session ids as a list.
+        Returns 'FlareSolverNotOK' object if flaresolverr status != 'ok'
+        """
         payload = {
             "cmd": "sessions.list"
         }
