@@ -35,7 +35,8 @@ class FlareSolverr:
     def sessions(self) -> Union[List[str], FlareSolverError]:
         """
         Get session ids as a list.
-        Returns 'FlareSolverNotOK' object if flaresolverr status != 'ok'
+        :rtype: Union[List[str], FlareSolverError]
+        :return: 'FlareSolverNotOK' object if flaresolverr status != 'ok'
         """
         payload = {
             "cmd": "sessions.list"
@@ -51,7 +52,8 @@ class FlareSolverr:
     def _sessions_raw(self) -> Union[SessionsListResponse, FlareSolverError]:
         """
         Get the whole response as SessionsListResponse object.
-        Returns 'FlareSolverNotOK' object if flaresolverr status != 'ok'
+        :rtype: Union[SessionsListResponse, FlareSolverError]
+        :return: 'FlareSolverNotOK' object if flaresolverr status != 'ok'
         """
         payload = {
             "cmd": "sessions.list"
@@ -68,7 +70,10 @@ class FlareSolverr:
         Create a session. This will launch a new browser instance which will retain cookies.
         :param session_id: String. Optional.
         :param proxy_url: String. Optional. Must include proxy schema. ("http://", "socks4://", "socks5://")
-        :return:
+        :type session_id: str
+        :type proxy_url: str
+        :rtype: Union[SesssionCreateResponse, FlareSolverError]
+        :return: FlareSolverr sessions.create response as a class or a class containing error message.
         """
         payload = {
             "cmd": "sessions.create",
@@ -90,7 +95,9 @@ class FlareSolverr:
         """
         Destroy an existing FlareSolverr session.
         :param session_id: Required. String.
-        :return: Union[FlareSolverOK, FlareSolverError]
+        :type session_id: str
+        :rtype: Union[FlareSolverOK, FlareSolverError]
+        :return: Class containing OK or Error messages.
         """
         payload = {
             "cmd": "sessions.destroy",
