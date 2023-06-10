@@ -3,7 +3,7 @@ from typing import Union, Literal, Optional, List
 import orjson
 import requests
 
-from .response_models import FlareSolverNotOK, SessionsListResponse, SesssionCreateResponse
+from .response_models import FlareSolverError, SessionsListResponse, SesssionCreateResponse, FlareSolverOK
 from .solver_exceptions import UnsupportedProxySchema
 
 
@@ -32,7 +32,7 @@ class FlareSolverr:
         self.flare_solverr_url = f"{http_schema}://{host}{':' + self.port if port is not None else ''}/{v}"
 
     @property
-    def sessions(self) -> Union[List[str], FlareSolverNotOK]:
+    def sessions(self) -> Union[List[str], FlareSolverError]:
         """
         Get session ids as a list.
         Returns 'FlareSolverNotOK' object if flaresolverr status != 'ok'
@@ -44,11 +44,11 @@ class FlareSolverr:
         response_dict = orjson.loads(response.content)
 
         if response_dict["status"] != "ok":
-            return FlareSolverNotOK.from_dict(response_dict)
+            return FlareSolverError.from_dict(response_dict)
         return SessionsListResponse.from_dict(response_dict).sessions
 
     @property
-    def _sessions_raw(self) -> Union[SessionsListResponse, FlareSolverNotOK]:
+    def _sessions_raw(self) -> Union[SessionsListResponse, FlareSolverError]:
         """
         Get the whole response as SessionsListResponse object.
         Returns 'FlareSolverNotOK' object if flaresolverr status != 'ok'
@@ -60,10 +60,10 @@ class FlareSolverr:
         response_dict = orjson.loads(response.content)
 
         if response_dict["status"] != "ok":
-            return FlareSolverNotOK.from_dict(response_dict)
+            return FlareSolverError.from_dict(response_dict)
         return SessionsListResponse.from_dict(response_dict)
 
-    def create_session(self, session_id: str = None, proxy_url: str = None) -> Union[SesssionCreateResponse, FlareSolverNotOK]:
+    def create_session(self, session_id: str = None, proxy_url: str = None) -> Union[SesssionCreateResponse, FlareSolverError]:
         """
         Create a session. This will launch a new browser instance which will retain cookies.
         :param session_id: String. Optional.
@@ -83,5 +83,18 @@ class FlareSolverr:
         response_dict = orjson.loads(response.content)
 
         if response_dict["status"] != "ok":
-            return FlareSolverNotOK.from_dict(response_dict)
+            return FlareSolverError.from_dict(response_dict)
         return SesssionCreateResponse.from_dict(response_dict)
+
+    def destroy_session(self, session_id: str):
+        payload = {
+            "cmd": "sessions.destroy",
+            "session": session_id
+        }
+
+        response = self.req_session.post(self.flare_solverr_url, json=payload)
+        response_dict = orjson.loads(response.content)
+
+        if response_dict["status"] != "ok":
+            return FlareSolverError.from_dict(response_dict)
+        return FlareSolverOK.from_dict(response_dict)

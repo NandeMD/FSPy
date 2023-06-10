@@ -3,7 +3,7 @@ from typing import List
 
 
 @dataclass
-class FlareSolverNotOK:
+class FlareSolverError:
     status: str
     version: str
     message: str
@@ -13,6 +13,25 @@ class FlareSolverNotOK:
         return cls(
             dct["status"],
             dct["version"],
+            dct["message"]
+        )
+
+
+@dataclass
+class FlareSolverOK:
+    startTimestamp: int
+    endTimestamp: int
+    version: str
+    status: str
+    message: str
+
+    @classmethod
+    def from_dict(cls, dct):
+        return cls(
+            dct["startTimestamp"],
+            dct["endTimestamp"],
+            dct["version"],
+            dct["status"],
             dct["message"]
         )
 
