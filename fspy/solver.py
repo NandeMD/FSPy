@@ -86,7 +86,12 @@ class FlareSolverr:
             return FlareSolverError.from_dict(response_dict)
         return SesssionCreateResponse.from_dict(response_dict)
 
-    def destroy_session(self, session_id: str):
+    def destroy_session(self, session_id: str) -> Union[FlareSolverOK, FlareSolverError]:
+        """
+        Destroy an existing FlareSolverr session.
+        :param session_id: Required. String.
+        :return: Union[FlareSolverOK, FlareSolverError]
+        """
         payload = {
             "cmd": "sessions.destroy",
             "session": session_id
