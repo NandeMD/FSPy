@@ -3,7 +3,7 @@ from typing import Union, Literal, Optional, List
 import orjson
 import requests
 
-from .response_models import SessionsListResponse, SesssionCreateResponse, FlareSolverOK, GetRequestResponse
+from .response_models import SessionsListResponse, SesssionCreateResponse, FlareSolverOK, GetPostRequestResponse
 from .solver_exceptions import UnsupportedProxySchema, FlareSolverError
 
 
@@ -119,7 +119,7 @@ class FlareSolverr:
             cookies: Optional[List[dict]] = None,
             return_only_cookies: bool = False,
             proxy_url: Optional[str] = None
-    ) -> GetRequestResponse:
+    ) -> GetPostRequestResponse:
         payload = {
             "cmd": "request.get",
             "url": url,
@@ -141,4 +141,4 @@ class FlareSolverr:
 
         if response_dict["status"] != "ok":
             raise FlareSolverError.from_dict(response_dict)
-        return GetRequestResponse.from_dict(response_dict)
+        return GetPostRequestResponse.from_dict(response_dict)

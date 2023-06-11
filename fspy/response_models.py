@@ -85,7 +85,7 @@ class Solution:
 
 
 @dataclass
-class GetRequestResponse:
+class GetPostRequestResponse:
     startTimestamp: int
     endTimestamp: int
     version: str
