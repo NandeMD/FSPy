@@ -146,6 +146,24 @@ class FlareSolverr:
             return_only_cookies: bool = False,
             proxy_url: Optional[str] = None
     ) -> GetPostRequestResponse:
+        """
+        :param url: (required) str.
+        :type url: str
+        :param session: (optional) str. Session id for the request.
+        :type session: str
+        :param session_ttl_minutes: (optional) int. FlareSolverr will automatically rotate expired sessions based on the TTL provided in minutes.
+        :type session_ttl_minutes: int
+        :param max_timeout: (optional) int, default: 60000. Max timeout to solve the challenge in milliseconds.
+        :type max_timeout: int
+        :param cookies: (optional) dict. Additional cookes to be used by the browser.
+        :type cookies: dict
+        :param return_only_cookies: (optional) bool, default: False. Only returns the cookies.
+        :type return_only_cookies: bool
+        :param proxy_url: (optional) str. Proxy url.
+        :type proxy_url: str
+        :rtype: GetPostRequestResponse
+        :return: A class containing website data and other related request data.
+        """
         payload = {
             "cmd": "request.get",
             "url": url,
@@ -165,6 +183,26 @@ class FlareSolverr:
             return_only_cookies: bool = False,
             proxy_url: Optional[str] = None
     ) -> GetPostRequestResponse:
+        """
+        :param url: (required) str.
+        :type url: str
+        :param post_data: (required) str. Data to post as a dictionary. Automatically converted to x-www-form-urlencoded.
+        :type post_data: dict
+        :param session: (optional) str. Session id for the request.
+        :type session: str
+        :param session_ttl_minutes: (optional) int. FlareSolverr will automatically rotate expired sessions based on the TTL provided in minutes.
+        :type session_ttl_minutes: int
+        :param max_timeout: (optional) int, default: 60000. Max timeout to solve the challenge in milliseconds.
+        :type max_timeout: int
+        :param cookies: (optional) dict. Additional cookes to be used by the browser.
+        :type cookies: dict
+        :param return_only_cookies: (optional) bool, default: False. Only returns the cookies.
+        :type return_only_cookies: bool
+        :param proxy_url: (optional) str. Proxy url.
+        :type proxy_url: str
+        :rtype: GetPostRequestResponse
+        :return: A class containing website data and other related request data.
+        """
         payload = {
             "cmd": "request.get",
             "url": url,
