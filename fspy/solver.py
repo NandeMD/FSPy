@@ -3,8 +3,8 @@ from typing import Union, Literal, Optional, List
 import orjson
 import requests
 
-from .response_models import FlareSolverError, SessionsListResponse, SesssionCreateResponse, FlareSolverOK
-from .solver_exceptions import UnsupportedProxySchema
+from .response_models import SessionsListResponse, SesssionCreateResponse, FlareSolverOK
+from .solver_exceptions import UnsupportedProxySchema, FlareSolverError
 
 
 class FlareSolverrError(Exception):
@@ -45,7 +45,7 @@ class FlareSolverr:
         response_dict = orjson.loads(response.content)
 
         if response_dict["status"] != "ok":
-            return FlareSolverError.from_dict(response_dict)
+            raise FlareSolverError.from_dict(response_dict)
         return SessionsListResponse.from_dict(response_dict).sessions
 
     @property
@@ -62,7 +62,7 @@ class FlareSolverr:
         response_dict = orjson.loads(response.content)
 
         if response_dict["status"] != "ok":
-            return FlareSolverError.from_dict(response_dict)
+            raise FlareSolverError.from_dict(response_dict)
         return SessionsListResponse.from_dict(response_dict)
 
     def create_session(self, session_id: str = None, proxy_url: str = None) -> Union[SesssionCreateResponse, FlareSolverError]:
@@ -88,7 +88,7 @@ class FlareSolverr:
         response_dict = orjson.loads(response.content)
 
         if response_dict["status"] != "ok":
-            return FlareSolverError.from_dict(response_dict)
+            raise FlareSolverError.from_dict(response_dict)
         return SesssionCreateResponse.from_dict(response_dict)
 
     def destroy_session(self, session_id: str) -> Union[FlareSolverOK, FlareSolverError]:
@@ -108,5 +108,5 @@ class FlareSolverr:
         response_dict = orjson.loads(response.content)
 
         if response_dict["status"] != "ok":
-            return FlareSolverError.from_dict(response_dict)
+            raise FlareSolverError.from_dict(response_dict)
         return FlareSolverOK.from_dict(response_dict)
