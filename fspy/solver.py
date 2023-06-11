@@ -1,4 +1,5 @@
 from typing import Union, Literal, Optional, List
+from urllib.parse import urlencode
 
 import orjson
 import requests
@@ -110,22 +111,7 @@ class FlareSolverr:
             raise FlareSolverError.from_dict(response_dict)
         return FlareSolverOK.from_dict(response_dict)
 
-    def request_get(
-            self,
-            url: str,
-            session: Optional[str] = None,
-            session_ttl_minutes: Optional[int] = None,
-            max_timeout: int = 60000,
-            cookies: Optional[List[dict]] = None,
-            return_only_cookies: bool = False,
-            proxy_url: Optional[str] = None
-    ) -> GetPostRequestResponse:
-        payload = {
-            "cmd": "request.get",
-            "url": url,
-            "maxTimeout": max_timeout,
-            "returnOnlyCookies": return_only_cookies
-        }
+    def _do_the_work_for_get_post(self, payload: dict, session, session_ttl_minutes, cookies, proxy_url) -> GetPostRequestResponse:
         if session:
             payload["session"] = session
         if session_ttl_minutes:
@@ -142,3 +128,41 @@ class FlareSolverr:
         if response_dict["status"] != "ok":
             raise FlareSolverError.from_dict(response_dict)
         return GetPostRequestResponse.from_dict(response_dict)
+
+    def request_get(
+            self,
+            url: str,
+            session: Optional[str] = None,
+            session_ttl_minutes: Optional[int] = None,
+            max_timeout: int = 60000,
+            cookies: Optional[List[dict]] = None,
+            return_only_cookies: bool = False,
+            proxy_url: Optional[str] = None
+    ) -> GetPostRequestResponse:
+        payload = {
+            "cmd": "request.get",
+            "url": url,
+            "maxTimeout": max_timeout,
+            "returnOnlyCookies": return_only_cookies,
+        }
+        return self._do_the_work_for_get_post(payload, session, session_ttl_minutes, cookies, proxy_url)
+
+    def request_post(
+            self,
+            url: str,
+            post_data: dict,
+            session: Optional[str] = None,
+            session_ttl_minutes: Optional[int] = None,
+            max_timeout: int = 60000,
+            cookies: Optional[List[dict]] = None,
+            return_only_cookies: bool = False,
+            proxy_url: Optional[str] = None
+    ) -> GetPostRequestResponse:
+        payload = {
+            "cmd": "request.get",
+            "url": url,
+            "maxTimeout": max_timeout,
+            "returnOnlyCookies": return_only_cookies,
+            "postData": urlencode(post_data)
+        }
+        return self._do_the_work_for_get_post(payload, session, session_ttl_minutes, cookies, proxy_url)
