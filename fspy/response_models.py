@@ -3,21 +3,6 @@ from typing import List
 
 
 @dataclass
-class FlareSolverError:
-    status: str
-    version: str
-    message: str
-
-    @classmethod
-    def from_dict(cls, dct):
-        return cls(
-            dct["status"],
-            dct["version"],
-            dct["message"]
-        )
-
-
-@dataclass
 class FlareSolverOK:
     startTimestamp: int
     endTimestamp: int
