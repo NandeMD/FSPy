@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fspy"
+version = "0.1.0"
+authors = [
+    {name = "NandeMD"}
+]
+description = "A FlareSolverr wrapper for Python."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+keywords = ["wrapper", "flaresolverr"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Utilities",
+    "Typing :: Typed"
+]
+dependencies = [
+    "certifi==2023.5.7",
+    "charset-normalizer==3.1.0",
+    "idna==3.4",
+    "urllib3==2.0.2",
+    "requests==2.31.0",
+    "orjson==3.9.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/NandeMD/FSPy"
+Repository = "https://github.com/NandeMD/FSPy"
+
+[tool.distutils.bdist_wheel]
+universal = true
