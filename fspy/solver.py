@@ -1,4 +1,4 @@
-from typing import Union, Literal, Optional, List
+from typing import Union, Literal, Optional, List, Tuple
 from urllib.parse import urlencode
 
 import orjson
@@ -30,7 +30,14 @@ class FlareSolverr:
         self.port = str(port) if port is not None else None
         self.http_schema = http_schema
         self.v = v
+        self.flare_solverr_url = f"{http_schema}://{host}{':' + self.port if port is not None else ''}"
+        self.version, self.user_agent = self._check_flare_solver()
         self.flare_solverr_url = f"{http_schema}://{host}{':' + self.port if port is not None else ''}/{v}"
+
+    def _check_flare_solver(self) -> Tuple[str, str]:
+        response = self.req_session.get(self.flare_solverr_url)
+        resp_dict = orjson.loads(response.content)
+        return resp_dict["version"], resp_dict["userAgent"]
 
     @property
     def sessions(self) -> List[str]:
