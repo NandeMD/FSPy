@@ -83,7 +83,7 @@ class FlareSolverr:
         if proxy_url:
             if not proxy_url.startswith("http://") and not proxy_url.startswith("https://") and not proxy_url.startswith("socks4://") and not proxy_url.startswith("socks5://"):
                 raise UnsupportedProxySchema(f"Supported proxy schemas: ['http(s), socks4, socks5']. Yours: {proxy_url.split('://', 1)[0]}")
-            payload["proxy"] = proxy_url
+            payload["proxy"] = {"url": proxy_url}
         response = self.req_session.post(self.flare_solverr_url, json=payload)
         response_dict = orjson.loads(response.content)
 
