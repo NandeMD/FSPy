@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fspy"
-version = "0.1.0"
+version = "0.2.0"
 authors = [
     {name = "NandeMD"}
 ]
@@ -14,7 +14,7 @@ requires-python = ">=3.8"
 license = {file = "LICENSE"}
 keywords = ["wrapper", "flaresolverr"]
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Operating System :: OS Independent",
