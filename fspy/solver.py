@@ -22,6 +22,18 @@ class FlareSolverr:
             additional_headers: dict = None,
             v: str = "v1"
     ) -> None:
+        """
+        :param host: Host address for FlareSolverr. Default: localhost.
+        :type host: str
+        :param port:  Host port for FlareSolverr. Defaul: 8191.
+        :type port: str | int
+        :param http_schema: Http schema for the requests module. Default: http
+        :type http_schema: Literal["http", "https"]
+        :param additional_headers: Additional headers you want to include while sending requests to FlareSolverr.
+        :type additional_headers: dict
+        :param v: FlareSolverr endpoint version. Do not change until strictly necessary.
+        :type v: str
+        """
         self.req_session = requests.Session()
         ah = additional_headers if additional_headers is not None else {}
         self.req_session.headers.update = {"Content-Type": "application/json", **ah}
