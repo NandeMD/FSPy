@@ -1,10 +1,10 @@
-from typing import Union, Literal, Optional, List, Tuple
+from typing import Any, Union, Literal, Optional, List, Tuple
 from urllib.parse import urlencode
 
 import orjson
 import requests
 
-from .response_models import SessionsListResponse, SesssionCreateResponse, FlareSolverOK, GetPostRequestResponse
+from .response_models import SessionsListResponse, SessionCreateResponse, FlareSolverOK, GetPostRequestResponse
 from .solver_exceptions import UnsupportedProxySchema, FlareSolverError
 
 
@@ -19,13 +19,13 @@ class FlareSolverr:
             host: str = "127.0.0.1",
             port: Optional[Union[str, int]] = "8191",
             http_schema: Literal["http", "https"] = "http",
-            additional_headers: dict = None,
+            additional_headers: dict | None = None,
             v: str = "v1"
     ) -> None:
         """
         :param host: Host address for FlareSolverr. Default: localhost.
         :type host: str
-        :param port:  Host port for FlareSolverr. Defaul: 8191.
+        :param port:  Host port for FlareSolverr. Default: 8191.
         :type port: str | int
         :param http_schema: Http schema for the requests module. Default: http
         :type http_schema: Literal["http", "https"]
@@ -42,9 +42,9 @@ class FlareSolverr:
         self.port = str(port) if port is not None else None
         self.http_schema = http_schema
         self.v = v
-        self.flare_solverr_url = f"{http_schema}://{host}{':' + self.port if port is not None else ''}"
+        self.flare_solverr_url = f"{http_schema}://{host}{':' + self.port if self.port is not None else ''}"
         self.version, self.user_agent = self._check_flare_solver()
-        self.flare_solverr_url = f"{http_schema}://{host}{':' + self.port if port is not None else ''}/{v}"
+        self.flare_solverr_url = f"{http_schema}://{host}{':' + self.port if self.port is not None else ''}/{v}"
 
     def _check_flare_solver(self) -> Tuple[str, str]:
         response = self.req_session.get(self.flare_solverr_url)
@@ -85,17 +85,17 @@ class FlareSolverr:
             raise FlareSolverError.from_dict(response_dict)
         return SessionsListResponse.from_dict(response_dict)
 
-    def create_session(self, session_id: str = None, proxy_url: str = None) -> SesssionCreateResponse:
+    def create_session(self, session_id: str | None = None, proxy_url: str | None = None) -> SessionCreateResponse:
         """
         Create a session. This will launch a new browser instance which will retain cookies.
         :param session_id: String. Optional.
         :param proxy_url: String. Optional. Must include proxy schema. ("http://", "socks4://", "socks5://")
         :type session_id: str
         :type proxy_url: str
-        :rtype: SesssionCreateResponse
+        :rtype: SessionCreateResponse
         :return: FlareSolverr sessions.create response as a class.
         """
-        payload = {
+        payload: dict[str, Any] = {
             "cmd": "sessions.create",
         }
         if session_id:
@@ -108,7 +108,7 @@ class FlareSolverr:
 
         if response_dict["status"] != "ok":
             raise FlareSolverError.from_dict(response_dict)
-        return SesssionCreateResponse.from_dict(response_dict)
+        return SessionCreateResponse.from_dict(response_dict)
 
     def destroy_session(self, session_id: str) -> FlareSolverOK:
         """

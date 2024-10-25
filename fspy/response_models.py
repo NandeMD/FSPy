@@ -43,7 +43,7 @@ class SessionsListResponse:
 
 
 @dataclass
-class SesssionCreateResponse:
+class SessionCreateResponse:
     startTimestamp: int
     endTimestamp: int
     version: str
