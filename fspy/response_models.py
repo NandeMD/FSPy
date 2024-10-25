@@ -67,7 +67,7 @@ class SessionCreateResponse:
 class Solution:
     url: str
     status: int
-    cookies: dict
+    cookies: List[dict]
     user_agent: str
     headers: dict
     response: str
