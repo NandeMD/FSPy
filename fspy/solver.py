@@ -216,7 +216,7 @@ class FlareSolverr:
         :return: A class containing website data and other related request data.
         """
         payload = {
-            "cmd": "request.get",
+            "cmd": "request.post",
             "url": url,
             "maxTimeout": max_timeout,
             "returnOnlyCookies": return_only_cookies,
