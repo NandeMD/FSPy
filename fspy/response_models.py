@@ -43,7 +43,7 @@ class SessionsListResponse:
 
 
 @dataclass
-class SesssionCreateResponse:
+class SessionCreateResponse:
     startTimestamp: int
     endTimestamp: int
     version: str
@@ -67,7 +67,7 @@ class SesssionCreateResponse:
 class Solution:
     url: str
     status: int
-    cookies: dict
+    cookies: List[dict]
     user_agent: str
     headers: dict
     response: str
